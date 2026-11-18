@@ -26,7 +26,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .topbar { position: sticky; top: 0; z-index: 20; height: 62px; display: grid; grid-template-columns: 210px 1fr auto; align-items: center; gap: 20px; padding: 0 20px; background: color-mix(in srgb, var(--surface) 94%, transparent); border-bottom: 1px solid var(--border); backdrop-filter: blur(14px); }
 .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 750; letter-spacing: -.025em; }
 .brand-mark { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 9px; color: white; background: var(--accent); box-shadow: 0 5px 14px color-mix(in srgb, var(--accent) 28%, transparent); }
-.project-crumb { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: 12px; }
+.project-crumb { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: 12px; text-decoration: none; }
+.project-crumb:hover strong { color: var(--accent); }
 .project-crumb strong { color: var(--text); font-weight: 650; }
 .project-crumb > span:first-of-type { color: var(--border); }
 .top-actions, .heading-actions { display: flex; align-items: center; gap: 8px; }
@@ -51,10 +52,14 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .language-mode small { margin-top: 2px; font-size: 9px; }
 
 .content { min-width: 0; width: min(1460px, 100%); margin: 0 auto; padding: 24px; }
+.page-error { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding: 10px 12px; border: 1px solid color-mix(in srgb, var(--danger) 35%, var(--border)); border-radius: 9px; color: var(--danger); background: var(--danger-soft); font-size: 10px; }
+.page-error button { width: 26px; height: 26px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 6px; color: currentColor; background: transparent; cursor: pointer; }
+.page-error button:hover { background: color-mix(in srgb, var(--danger) 10%, transparent); }
 .page-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
 .analysis-status { display: flex; align-items: center; gap: 6px; color: var(--success); font-size: 10px; font-weight: 700; letter-spacing: .045em; text-transform: uppercase; }
 .page-heading h1 { margin: 7px 0 0; font-size: clamp(20px, 2vw, 26px); line-height: 1.18; letter-spacing: -.035em; }
 .page-heading p { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin: 7px 0 0; color: var(--muted); font-size: 11px; }
+.diff-add { color: var(--success); } .diff-del { color: var(--danger); }
 .page-heading code, .selection-bar code { font-family: "SFMono-Regular", Consolas, monospace; }
 .button { height: 35px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); background: var(--surface); font-size: 11px; font-weight: 650; cursor: pointer; box-shadow: 0 1px 1px color-mix(in srgb, var(--text) 5%, transparent); }
 .button:hover { background: var(--surface-2); border-color: color-mix(in srgb, var(--muted) 50%, var(--border)); }
@@ -143,6 +148,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .url-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 13%, transparent); }
 .url-field.field-error { border-color: var(--danger); }
 .url-field input { min-width: 0; flex: 1; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 11px; }
+.url-field input:disabled { opacity: .7; cursor: wait; }
 .url-field input::placeholder { color: var(--faint); }
 .error-message { margin: 6px 0 0; color: var(--danger); font-size: 9px; }
 .scope-note { display: grid; grid-template-columns: 18px 1fr; gap: 7px; margin: 14px 0; padding: 10px; border-radius: 8px; color: var(--muted); background: var(--surface-2); font-size: 9px; line-height: 1.45; }
