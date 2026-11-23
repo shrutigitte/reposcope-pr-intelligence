@@ -20,6 +20,9 @@ type GitHubFile = {
   patch?: string;
 };
 
+export const runtime = "nodejs";
+export const maxDuration = 30;
+
 const graphPositions = [
   [50, 47], [23, 17], [20, 73], [76, 17],
   [78, 73], [12, 45], [88, 47], [50, 88],
@@ -184,18 +187,25 @@ function buildAnalysis(
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const parsed = parsePullRequestUrl(body?.url);
+    const body: unknown = await request.json();
+    const sourceUrl =
+      typeof body === "object" && body !== null && "url" in body
+        ? (body as { url?: unknown }).url
+        : undefined;
+    const parsed = parsePullRequestUrl(sourceUrl);
     if (!parsed) return Response.json({ error: "Enter a valid GitHub pull request URL." }, { status: 400 });
 
-    const headers = {
+    const headers: Record<string, string> = {
       Accept: "application/vnd.github+json",
       "User-Agent": "RepoScope-PR-Intelligence",
     };
+    if (process.env.GITHUB_TOKEN) {
+      headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
     const base = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${parsed.number}`;
     const [pullResponse, filesResponse] = await Promise.all([
-      fetch(base, { headers, cf: { cacheTtl: 60, cacheEverything: true } } as RequestInit),
-      fetch(`${base}/files?per_page=100`, { headers, cf: { cacheTtl: 60, cacheEverything: true } } as RequestInit),
+      fetch(base, { headers, cache: "no-store" }),
+      fetch(`${base}/files?per_page=100`, { headers, cache: "no-store" }),
     ]);
 
     if (pullResponse.status === 404 || filesResponse.status === 404) {
@@ -212,7 +222,7 @@ export async function POST(request: Request) {
     const files = await filesResponse.json() as GitHubFile[];
     if (!files.length) return Response.json({ error: "This pull request has no changed files to analyze." }, { status: 422 });
 
-    return Response.json(buildAnalysis(body.url, parsed.owner, parsed.repo, pull, files));
+    return Response.json(buildAnalysis(sourceUrl as string, parsed.owner, parsed.repo, pull, files));
   } catch {
     return Response.json({ error: "RepoScope could not analyze this pull request." }, { status: 500 });
   }
