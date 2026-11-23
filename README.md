@@ -4,6 +4,8 @@ RepoScope turns a public GitHub pull request into a fast, visual risk review. Pa
 
 ## Live product
 
+[Open RepoScope on Vercel](https://reposcope-dusky-six.vercel.app)
+
 The application is designed for anonymous use: visitors do not need an OpenAI or GitHub account. A server-side `GITHUB_TOKEN` can be added by the deployer to increase GitHub API limits without exposing credentials to users.
 
 ## What it demonstrates
